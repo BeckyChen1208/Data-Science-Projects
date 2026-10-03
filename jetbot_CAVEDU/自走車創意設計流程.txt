@@ -1,0 +1,160 @@
+自走車最終簡化版操作流程
+
+我們現在改成最簡化的手持展示版本，不再讓車子自己找路，也不做複雜導航。
+流程就是：先辨識 RED / GREEN 任務卡，再依照任務卡順序辨識三張圖片。
+
+### 一、啟動方式
+
+1. 打開 smart_city_mission_vehicle_FINAL_SIMPLE_HANDHELD(1).ipynb
+2. 從第一格開始往下執行
+3. 先跑到 **Motor test**
+4. 確認車子會原地轉一圈、然後停止
+5. 接著繼續往下跑，直到 camera 畫面出現
+6. 最後執行 **Start mission**
+7. 畫面會顯示：
+
+Show RED or GREEN card.
+
+這時候就可以把 RED 或 GREEN 卡牌拿到鏡頭前面。
+
+---
+
+## 二、RED 任務流程
+
+如果一開始給它看的是 RED 卡牌，程式會進入 RED 任務。
+
+畫面會依序要求：
+
+target: fire
+target: fire_extinguisher
+target: fire_station
+
+操作方式：
+
+1. 拿 RED 卡牌給鏡頭看
+2. 程式確認 RED 後，畫面會顯示：
+
+target: fire
+
+3. 拿火的圖片給它看
+4. 它辨識到 fire 後，會原地轉一圈
+5. 接著畫面會顯示：
+
+target: fire_extinguisher
+
+6. 拿滅火器圖片給它看
+7. 它辨識到 fire_extinguisher 後，會再原地轉一圈
+8. 接著畫面會顯示：
+
+target: fire_station
+
+9. 拿消防局圖片給它看
+10. 它辨識到 fire_station 後，就會停止不動，任務完成
+
+RED 任務總流程：
+
+RED card
+→ fire：轉一圈
+→ fire_extinguisher：轉一圈
+→ fire_station：停止
+
+---
+
+## 三、GREEN 任務流程
+
+如果一開始給它看的是 GREEN 卡牌，程式會進入 GREEN 任務。
+
+畫面會依序要求：
+
+target: weed
+target: weed_cutter
+target: farm
+
+操作方式：
+
+1. 拿 GREEN 卡牌給鏡頭看
+2. 程式確認 GREEN 後，畫面會顯示：
+
+target: weed
+
+3. 拿草的圖片給它看
+4. 它辨識到 weed 後，會原地轉一圈
+5. 接著畫面會顯示：
+
+target: weed_cutter
+
+6. 拿除草機圖片給它看
+7. 它辨識到 weed_cutter 後，會再原地轉一圈
+8. 接著畫面會顯示：
+
+target: farm
+
+9. 拿農場圖片給它看
+10. 它辨識到 farm 後，就會停止不動，任務完成
+
+GREEN 任務總流程：
+
+GREEN card
+→ weed：轉一圈
+→ weed_cutter：轉一圈
+→ farm：停止
+
+---
+
+## 四、跑第二輪的方法
+
+第一輪完成後，不一定要整個 notebook 重新跑。
+
+可以直接按畫面上的：
+
+Reset
+
+或重新執行 **Start mission** 那一格。
+
+它會回到：
+
+Show RED or GREEN card.
+
+然後就可以重新給它看 RED 或 GREEN 卡牌。
+
+---
+
+## 五、現場保命按鈕
+
+如果 RED / GREEN 卡牌辨識不穩，畫面旁邊有兩個按鈕：
+
+Force RED
+Force GREEN
+
+如果卡牌 3 秒內沒有成功辨識，展示時不要卡太久，可以直接按：
+
+Force RED
+
+或
+
+Force GREEN
+
+按完之後，後面的物件流程一樣會正常跑。
+
+---
+
+## 六、注意事項
+
+現在這版卡牌辨識不是看字的顏色，而是看字本身的形狀。
+
+也就是：
+
+RED 字比較短
+GREEN 字比較長
+
+所以我們拿卡牌的時候，字要盡量清楚、正對鏡頭、不要太歪、不要太遠。
+
+另外，這版程式只會認「目前畫面 target 指定的那一張」。
+例如現在 target 是 `fire`，就算它看到其他東西，也不會動。
+只有看到正確 target，才會執行動作。
+
+---
+
+我最後確認一次：
+**對，現在這份程式碼就是這個流程。**
+它不會再做找路、不會自己找入口、不會亂跑，就是手拿卡牌和圖片給鏡頭看，辨識到指定目標就做指定動作。
